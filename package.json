@@ -3,8 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^3.2.2",
+    "@material-ui/icons": "^3.0.1",
+    "ajv": "^6.5.4",
+    "change-emitter": "^0.1.6",
+    "moment": "^2.20.1",
+    "prop-types": "^15.6.2",
+    "rc-progress": "^2.2.6",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
     "react-scripts": "2.0.5"
   },
   "scripts": {
