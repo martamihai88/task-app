@@ -58,6 +58,7 @@ export default theme => ({
     height: '100%',
     minHeight: 572,
     paddingTop: 70,
+    paddingBottom: 70,
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent:'center',

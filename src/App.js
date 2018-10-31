@@ -10,16 +10,7 @@ import './App.css';
 class App extends Component {
 
   state = {
-    cards: [
-      {
-        id: 'default',
-        title: 'default',
-        content: 'default',
-        dueDays:'',
-        createDate: '',
-        dueDate: ''
-      }
-    ],
+    cards: [],
     open: false,
     openEdit: false,
     id:'',
@@ -44,18 +35,10 @@ class App extends Component {
   
   editCard = (cardtype, id) => this.setState({ openEdit: true , cardType: cardtype, id: id});
 
-  modifyCard = (id, state) => {
+  modifyCard = (id, card) => {
     let allCards = this.state.cards;  
-    let editedCard = cardFilter(allCards, id);
-    editedCard = {
-      ...editedCard[0], 
-      title: state.title, 
-      content: state.content, 
-      dueDate: state.dueDate, 
-      dueDays: state.dueDays
-    }
     const index = indexFinder(allCards, id)
-    allCards.splice(index, 1, editedCard);  
+    allCards.splice(index, 1, card);  
 
     this.setState({cards : allCards});
     this.saveToLocalStorage();
@@ -67,7 +50,7 @@ class App extends Component {
   archiveCard = (id) => {
     let allCards = this.state.cards;
     let archivedCard = cardFilter(allCards, id);
-    archivedCard = {...archivedCard[0], dueDays: 0, archived: true}
+    archivedCard = {...archivedCard[0], dueDays: 0, archived: true, progress: 100};
     const index = indexFinder(allCards, id);
     allCards.splice(index, 1, archivedCard);
 
@@ -85,8 +68,11 @@ class App extends Component {
 
   componentDidMount()  {
     const cardsRetreived = progress(JSON.parse(localStorage.getItem('cards')));
-    const allCards = cardsRetreived.length > 0 ? cardsRetreived : this.state.cards ;
-    this.setState({cards: allCards});
+    const allCards = cardsRetreived ? cardsRetreived : this.state.cards ;
+    this.setState({cards: allCards}, () => {
+      localStorage.clear();
+      this.saveToLocalStorage();
+    });
   } 
   
   render() {
@@ -132,7 +118,7 @@ class App extends Component {
           open={openEdit} 
           close={this.handleEditClose} 
           modifyCard={this.modifyCard}/>
-        <Footer />
+        <Footer  cards={cards}/>
       </div>
     )
   }

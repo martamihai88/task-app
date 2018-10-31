@@ -9,7 +9,7 @@ import { withStyles,
 import AddIcon from '@material-ui/icons/Add';
 import moment from 'moment';
 import styles from './Styles/add-style';
-import { today } from '../static'
+import { today , key } from '../static'
 
 class AddCard extends React.Component {
 
@@ -19,19 +19,21 @@ class AddCard extends React.Component {
     content: '',
     value: 0,
     number: 0,
-    dueDays:'',
+    dueDays:0,
     createDate: '',
     dueDate: ''
   };
+
+  componentDidMount() {
+    this.setState({createDate: today._i, dueDate: today._i })
+  }
 
   handleChange = (event, value) => this.setState({ value });
 
   submitCard = () => { 
     const { value, title , content, dueDays, createDate, dueDate} = this.state;
     let type = value === 0 ? 'task' : 'note';
-    let key =  `_${Math.random().toString(36).substr(2, 9)}`;
-
-    const card = {id: key, type: type, title: title, content: content , dueDays: dueDays, createDate: createDate, dueDate:  dueDate};
+    const card = {id: key(), type: type, title: title, content: content , dueDays: dueDays, createDate: createDate, dueDate:  dueDate};
 
     this.props.addCard(card);
     this.setState({dueDays: ''});
@@ -43,7 +45,6 @@ class AddCard extends React.Component {
   handleContent = event => this.setState({content: event.target.value});
 
   setDueDate = event => {
-    
     if(this.state.value === 0){
       const end = moment(event.target.value);
       const date = end.diff(today, 'days');
@@ -68,30 +69,30 @@ class AddCard extends React.Component {
                 <Tab label="Note" />
               </Tabs>
             </AppBar>
-            <FormControl className={classes.input_1}>
-                <InputBase
-                  inputProps={{maxLength: 16}}
-                  id="bootstrap-input"
-                  required
-                  placeholder={value === 0 ? 'Task Name' : 'Note Title'}
-                  onChange={this.handleTitle}
-                  classes={{
-                    root: classes.bootstrapRoot,
-                    input: classes.bootstrapInput,
-                  }}
-                />
-            </FormControl>
-            <FormControl className={classes.input_2}>
-                <TextField
-                id="standard-multiline-static"
+            <FormControl style={{height: '67px', marginTop: 0}} className={classes.input_2}>
+              <TextField
+                  maxLength={16}
+                  id="outlined-required"
                 required
-                multiline
-                rows="8"
-                placeholder={value === 0 ? 'Task Content' : 'Note Content'}
-                onChange={this.handleContent}
+                placeholder={value === 0 ? 'Task Name' : 'Note Title'}
+                onChange={this.handleTitle}
                 className={classes.textField}
                 margin="normal"
+                variant="outlined"
               />
+            </FormControl>
+            <FormControl className={classes.input_2}>
+              <TextField
+              id="outlined-multiline-static"
+              required
+              multiline
+              rows="8"
+              placeholder={value === 0 ? 'Task Content' : 'Note Content'}
+              onChange={this.handleContent}
+              className={classes.textField}
+              margin="normal"
+              variant="outlined"
+              /> 
             </FormControl>
             <form className={classes.container} noValidate>
                 {value === 0 && <TextField

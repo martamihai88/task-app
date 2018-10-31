@@ -11,7 +11,6 @@ import styles from './Styles/header-style';
 import AppDrawer from './Drawer';
 
 window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
-
 class Header extends React.Component {
   state = {
     open: false,

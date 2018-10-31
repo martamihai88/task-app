@@ -1,31 +1,42 @@
 import React from 'react';
-import Build from '@material-ui/icons/Build';
-import Note from '@material-ui/icons/Note';
-import {  BottomNavigation, BottomNavigationAction } from '@material-ui/core';
+import { withStyles, Paper} from '@material-ui/core';
+import { today }from '../static';
+import styles from './Styles/footer-style';
+import { Build, Note, HourglassEmpty } from '@material-ui/icons';
 
-class Footer extends React.Component {
-  state = {
-    value: 0,
-  };
+export default withStyles(styles)((props) => {
 
-  handleChange = (event, value) => {
-    this.setState({ value });
-  };
+  const { paper, para, container} = props.classes
+  let taskNum = props.cards.filter(card => card.type === 'task');
+      taskNum = taskNum.length;
+  let noteNum = props.cards.filter(card => card.type === 'note');
+      noteNum = noteNum.length;
+  let taskInProgress = props.cards.filter(card => card.dueDate === today._i);
+      taskInProgress = taskInProgress.length;
 
-  render() {
-    const { value } = this.state;
+  return ( 
+    <React.Fragment>
+      <div className={container}>
+      <Paper className={paper}>
+        <HourglassEmpty  />
+        <p className={para}>
+          {taskInProgress}
+          </p>
+      </Paper>
+        <Paper className={paper}>
+          <Build  />
+          <p className={para}>
+            {taskNum}
+          </p>
+          </Paper>    
+        <Paper className={paper}>
+          <Note  />
+          <p className={para}>
+          {noteNum}
+          </p>
+        </Paper>
+      </div>
+    </React.Fragment>
+  );
+})
 
-    return (
-      <BottomNavigation
-        value={value}
-        onChange={this.handleChange}
-        showLabels
-      >
-        <BottomNavigationAction label="Tasks" icon={<Build />} />
-        <BottomNavigationAction label="Notes" icon={<Note />} />
-      </BottomNavigation>
-    );
-  }
-}
-
-export default Footer;
