@@ -7,13 +7,12 @@ import { Build, Note, HourglassEmpty } from '@material-ui/icons';
 export default withStyles(styles)((props) => {
 
   const { paper, para, container} = props.classes
-  let taskNum = props.cards.filter(card => card.type === 'task');
-      taskNum = taskNum.length;
-  let noteNum = props.cards.filter(card => card.type === 'note');
-      noteNum = noteNum.length;
-  let taskInProgress = props.cards.filter(card => card.dueDate === today._i);
-      taskInProgress = taskInProgress.length;
-
+  const { cards } = props;
+  const taskNum = cards.filter(card => card.type === 'task').length;
+  const noteNum = cards.filter(card => card.type === 'note').length;
+  const taskInProgress = cards.filter(
+    card => card.dueDate === today._i && card.archived !== true &&  card.type === 'task').length;
+    
   return ( 
     <React.Fragment>
       <div className={container}>

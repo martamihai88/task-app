@@ -1,7 +1,7 @@
 import React from 'react';
 import { withStyles, 
          Modal,Button, 
-         InputBase, FormControl, 
+         FormControl, 
          AppBar, 
          Tabs, 
          Tab, 
@@ -21,7 +21,8 @@ class AddCard extends React.Component {
     number: 0,
     dueDays:0,
     createDate: '',
-    dueDate: ''
+    dueDate: '',
+    progress: 0
   };
 
   componentDidMount() {
@@ -33,7 +34,7 @@ class AddCard extends React.Component {
   submitCard = () => { 
     const { value, title , content, dueDays, createDate, dueDate} = this.state;
     let type = value === 0 ? 'task' : 'note';
-    const card = {id: key(), type: type, title: title, content: content , dueDays: dueDays, createDate: createDate, dueDate:  dueDate};
+    const card = {id: key(), type: type, title: title, content: content , dueDays: dueDays, createDate: createDate, dueDate:  dueDate, progress: 0};
 
     this.props.addCard(card);
     this.setState({dueDays: ''});

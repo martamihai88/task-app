@@ -63,6 +63,7 @@ class Header extends React.Component {
                 content={card.content}
                 dueDays={card.dueDays}
                 progress={card.progress}
+                dueDate={card.dueDate}
                 editCard={editCard}
                 archiveCard={archiveCard}
                 remove={(e) =>this.props.remove(e)}

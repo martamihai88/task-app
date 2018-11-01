@@ -56,7 +56,7 @@ export default theme => ({
   },
   content: {
     height: '100%',
-    minHeight: 572,
+    minHeight: 740,
     paddingTop: 70,
     paddingBottom: 70,
     display: 'flex',

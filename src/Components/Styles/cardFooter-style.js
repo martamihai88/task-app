@@ -14,4 +14,7 @@ export default theme => ({
   rightIcon: {
     marginLeft: theme.spacing.unit,
   },
+  typography: {
+    padding: theme.spacing.unit * 2,
+  },
 });

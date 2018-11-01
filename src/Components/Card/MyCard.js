@@ -12,10 +12,9 @@ const styles = {
 };
 
 class MyCard extends React.Component {
-
   
   render(){
-    const { classes, type, title, content, remove, id, progress, dueDays, editCard, archiveCard } = this.props;
+    const { classes, type, title, content, remove, id, progress, dueDays, editCard, archiveCard, dueDate } = this.props;
 
     return (
       <Card className={classes.card}>
@@ -23,12 +22,18 @@ class MyCard extends React.Component {
           id={id}
           title={title}
           type={type}
-          content={content}
           progress={progress}
+          content={content}
           dueDays={dueDays}
           remove={(e) => remove(e)}
          />
-         <CardFooter cardType={type} id={id} editCard={editCard} archiveCard={archiveCard}
+         <CardFooter 
+          cardType={type} 
+          id={id} 
+          progress={progress}
+          editCard={editCard} 
+          archiveCard={archiveCard} 
+          dueDate={dueDate}
          />
       </Card>
     );

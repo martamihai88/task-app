@@ -1,7 +1,7 @@
 import React from 'react';
 import { withStyles, 
          Modal,Button, 
-         InputBase, FormControl, 
+         FormControl, 
          AppBar,  
          Tab, 
          TextField,

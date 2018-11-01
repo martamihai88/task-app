@@ -104,6 +104,7 @@ class App extends Component {
           />
           <Route exact path="/archive" render={() =>(
           <Header cards={cards.filter(card => card.archived)}
+           addCard={this.drawAddNewCard}
            editCard={this.editCard} 
            archiveCard={this.archiveCard} 
            remove={this.removeCard}/>)}
