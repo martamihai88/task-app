@@ -7,6 +7,8 @@ import Edit from './Components/Edit'
 import { progress , cardFilter , indexFinder} from './static'
 import './App.css';
 
+import { openAddCardRedux, closeAddCardRedux} from './Actions/appActions';
+import { connect } from 'react-redux';
 class App extends Component {
 
   state = {
@@ -17,6 +19,15 @@ class App extends Component {
     cardType:''
   }
   
+/* Transtition to Redux */
+
+  openAddCardRedux = () => this.props.openAddCardRedux(true);
+
+  closeAddCardRedux = () => this.props.openAddCardRedux(false);
+
+  /* Transtition to Redux */
+
+
   drawAddNewCard = () => this.setState({ open: true });
 
   handleModalClose = () => this.setState({ open: false });
@@ -76,35 +87,35 @@ class App extends Component {
   } 
   
   render() {
-    const { cards, open, openEdit, cardType, id } = this.state;
+    const { cards, openEdit, cardType, id } = this.state;
 
     return (
       <div className="App">
         <Switch>
           <Route exact path="/" render={() =>(
           <Header cards={cards.filter(card => card.archived !== true)} 
-            addCard={this.drawAddNewCard} 
+            addCard={this.openAddCardRedux} 
             editCard={this.editCard} 
             archiveCard={this.archiveCard} 
             remove={this.removeCard}/>)}
           />
           <Route exact path="/tasks" render={() =>(
           <Header cards={cards.filter(card => (card.type === 'task' && card.archived !== true))}
-           addCard={this.drawAddNewCard} 
+           addCard={this.openAddCardRedux} 
            editCard={this.editCard} 
            archiveCard={this.archiveCard} 
            remove={this.removeCard}/>)}
           />
           <Route exact path="/notes" render={() =>(
           <Header cards={cards.filter(card => (card.type === 'note' && card.archived !== true))} 
-          addCard={this.drawAddNewCard} 
+          addCard={this.openAddCardRedux} 
           editCard={this.editCard} 
           archiveCard={this.archiveCard} 
           remove={this.removeCard}/>)}
           />
           <Route exact path="/archive" render={() =>(
           <Header cards={cards.filter(card => card.archived)}
-           addCard={this.drawAddNewCard}
+           addCard={this.openAddCardRedux}
            editCard={this.editCard} 
            archiveCard={this.archiveCard} 
            remove={this.removeCard}/>)}
@@ -112,7 +123,7 @@ class App extends Component {
           <Route render={() =>(<h1 style={{fontSize: 200, textAlign:'center', margin: '200px 0'}}>Page not found 404</h1>)}
           />
         </Switch>
-        <Add open={open} close={this.handleModalClose} addCard={this.addCard}/>
+        <Add open={this.props.open} close={this.closeAddCardRedux} addCard={this.addCard}/>
         <Edit cards={cards} 
           id={id} 
           type={cardType} 
@@ -125,4 +136,13 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    open: state.app.open
+  };
+}
+const mapDispatchToProps = ({
+  openAddCardRedux, closeAddCardRedux
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

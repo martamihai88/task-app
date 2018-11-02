@@ -11,25 +11,53 @@ import moment from 'moment';
 import styles from './Styles/add-style';
 import { today , key } from '../static'
 
+
+import { connect } from 'react-redux';
+import { addCardRedux, 
+         handleTitleRedux ,
+         handleContentRedux,
+         setDueDateRedux,
+         handleAddBarChangeRedux,
+         resetAddCardRedux } from '../Actions/addCardActions';
+import { closeAddCardRedux} from '../Actions/appActions';
+         
 class AddCard extends React.Component {
 
-  state = {
-    id: null,
-    title: '',
-    content: '',
-    value: 0,
-    number: 0,
-    dueDays:0,
-    createDate: '',
-    dueDate: '',
-    progress: 0
+/* Transtition to Redux */
+  addCardRedux = () => {
+    let type = this.props.value === 0 ? 'task' : 'note';
+    this.props.addCardRedux({ id: key(), type: type});
+    this.props.resetAddCardRedux();
+    this.props.closeAddCardRedux(false);
+  }
+
+  handleTitleRedux = event => this.props.handleTitleRedux({title: event.target.value});
+
+  handleContentRedux = event => this.props.handleContentRedux({content: event.target.value});
+
+  handleAddBarChangeRedux = (event, value) => {
+    this.props.handleAddBarChangeRedux({value: value})
+    this.props.resetAddCardRedux();
+  };
+  
+  setDueDateRedux = event => {
+    if(this.props.value === 0){
+      const end = moment(event.target.value);
+      const date = end.diff(today, 'days');
+      this.props.setDueDateRedux({dueDays: date, createDate: today._i, dueDate: end._i});
+    }
   };
 
-  componentDidMount() {
+  /* Transtition to Redux */
+
+  /* componentDidMount() {
     this.setState({createDate: today._i, dueDate: today._i })
   }
 
-  handleChange = (event, value) => this.setState({ value });
+  handleChange = (event, value) => {
+    console.log(event.value);
+    this.setState({ value })
+  };
 
   submitCard = () => { 
     const { value, title , content, dueDays, createDate, dueDate} = this.state;
@@ -51,12 +79,11 @@ class AddCard extends React.Component {
       const date = end.diff(today, 'days');
       this.setState({dueDays: date, createDate: today._i, dueDate: end._i});
     }
-  };
+  }; */
 
   render() {
-    const { classes, open, close } = this.props;
-    const { value , id} = this.state;
-   
+    const { classes, open, close, value } = this.props;
+
     return (
       <React.Fragment>
         <Modal
@@ -65,7 +92,7 @@ class AddCard extends React.Component {
         >
           <div className={classes.paper}>
             <AppBar position="static" className={classes.bar}>
-              <Tabs value={value} onChange={this.handleChange}>
+              <Tabs value={value} onChange={this.handleAddBarChangeRedux}>
                 <Tab label="Task" />
                 <Tab label="Note" />
               </Tabs>
@@ -76,7 +103,7 @@ class AddCard extends React.Component {
                   id="outlined-required"
                 required
                 placeholder={value === 0 ? 'Task Name' : 'Note Title'}
-                onChange={this.handleTitle}
+                onChange={this.handleTitleRedux}
                 className={classes.textField}
                 margin="normal"
                 variant="outlined"
@@ -89,7 +116,7 @@ class AddCard extends React.Component {
               multiline
               rows="8"
               placeholder={value === 0 ? 'Task Content' : 'Note Content'}
-              onChange={this.handleContent}
+              onChange={this.handleContentRedux}
               className={classes.textField}
               margin="normal"
               variant="outlined"
@@ -97,12 +124,12 @@ class AddCard extends React.Component {
             </FormControl>
             <form className={classes.container} noValidate>
                 {value === 0 && <TextField
-                  id={id}
+                  id={this.props.card.id}
                   label="Due Date"
                   type="date"
                   required
                   defaultValue={today._i}
-                  onChange={this.setDueDate}
+                  onChange={this.setDueDateRedux}
                   classes={{
                     root: classes.formControl
                   }}
@@ -111,7 +138,7 @@ class AddCard extends React.Component {
                   }}
                 />}
             </form>
-            <Button variant="fab" mini color="primary" className={classes.button}  onClick={this.submitCard}>
+            <Button variant="fab" mini color="primary" className={classes.button}  onClick={this.addCardRedux}>
                 <AddIcon />
             </Button>
           </div>
@@ -121,4 +148,20 @@ class AddCard extends React.Component {
   }
 }
 
-export default withStyles(styles)(AddCard);
+const mapStateToProps = state => {
+  return {
+    card: state.addCard.card,
+    value: state.addCard.appBarValue
+  };
+}
+const mapDispatchToProps = ({
+  addCardRedux,
+  handleTitleRedux,
+  handleContentRedux,
+  setDueDateRedux,
+  handleAddBarChangeRedux,
+  resetAddCardRedux,
+  closeAddCardRedux
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(AddCard))
