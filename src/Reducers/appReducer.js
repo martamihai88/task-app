@@ -9,7 +9,7 @@ const initialState = {
     dueDays: 0,
     createDate: '',
     dueDate: today._i,
-    progress: '',
+    progress: 0,
     type: '',
     },
     id: '',
@@ -66,7 +66,6 @@ const initialState = {
         ...state, cards: state.cards.filter((card) => card.id !== payload)
         }
       case types.ARCHIVE_CARD:
-      console.log(state.cards.filter((card) => card.id !== payload.id))
         return {
         ...state, cards: state.cards.filter((card) => card.id !== payload.id) , archive: [...state.archive, payload ]
         }

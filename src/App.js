@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Route, Switch } from "react-router-dom";
 import { withRouter } from 'react-router'
 import Header from './Components/Header';
@@ -51,6 +52,11 @@ class App extends Component {
       </div>
     )
   }
+}
+
+App.propTypes = {
+  cards:  PropTypes.arrayOf(PropTypes.object),
+  archive: PropTypes.arrayOf(PropTypes.object),
 }
 
 const mapStateToProps = state => {
