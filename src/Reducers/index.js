@@ -1,11 +1,9 @@
 import { combineReducers } from 'redux';
-import removeCardReducer from './removeCardReducer';
-import addCardReducer from './addCardReducer';
 import appReducer from './appReducer'
+import appSideReducer from './appSideReducer'
 
 
 export default combineReducers({
-  removeCard: removeCardReducer,
-  addCard: addCardReducer,
-  app: appReducer
+  app: appReducer,
+  appSide: appSideReducer
 })

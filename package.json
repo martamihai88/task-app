@@ -7,6 +7,8 @@
     "@material-ui/icons": "^3.0.1",
     "ajv": "^6.5.4",
     "change-emitter": "^0.1.6",
+    "hoist-non-react-statics": "^3.1.0",
+    "lodash": "^4.17.11",
     "moment": "^2.20.1",
     "prop-types": "^15.6.2",
     "rc-progress": "^2.2.6",

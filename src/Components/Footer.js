@@ -1,17 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withStyles, Paper} from '@material-ui/core';
 import { today }from '../static';
 import styles from './Styles/footer-style';
 import { Build, Note, HourglassEmpty } from '@material-ui/icons';
+import { connect } from 'react-redux';
 
-export default withStyles(styles)((props) => {
-
-  const { paper, para, container} = props.classes
+const Footer = props => {
+  const { paper, para, container } = props.classes
   const { cards } = props;
   const taskNum = cards.filter(card => card.type === 'task').length;
   const noteNum = cards.filter(card => card.type === 'note').length;
   const taskInProgress = cards.filter(
-    card => card.dueDate === today._i && card.archived !== true &&  card.type === 'task').length;
+    card => card.dueDate === today._i &&  card.type === 'task').length;
     
   return ( 
     <React.Fragment>
@@ -37,5 +38,17 @@ export default withStyles(styles)((props) => {
       </div>
     </React.Fragment>
   );
-})
+}
 
+Footer.propTypes = {
+  cards:  PropTypes.arrayOf(PropTypes.object),
+  classes: PropTypes.object
+}
+
+const mapStateToProps = state => {
+  return {
+    cards: state.app.cards
+  };
+}
+
+export default connect(mapStateToProps)(withStyles(styles)(Footer))

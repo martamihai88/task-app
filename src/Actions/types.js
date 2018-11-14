@@ -1,12 +1,20 @@
 export const ADD_CARD = 'ADD_CARD';
+export const EDIT_CARD_OPEN = 'EDIT_CARD_OPEN';
+export const EDIT_CARD_CLOSE = 'EDIT_CARD_OPEN_CLOSE';
+export const EDIT_CARD = 'EDIT_CARD';
+export const EDIT_CARD_SUBMIT = 'EDIT_CARD_SUBMIT';
 export const INPUT_TITLE = 'INPUT_TITLE';
 export const INPUT_CONTENT = 'INPUT_CONTENT';
 export const INPUT_DATE = 'INPUT_DATE;'
-export const ADD_APP_BAR_VALUE = 'ADD_APP_BAR_VALUE'
 export const RESET_ADD_CARD = 'RESET_ADD_CARD';
+export const ADD_CARD_TO_CARDS = 'ADD_CARD_TO_CARDS';
+export const REMOVE_CARD = "REMOVE_CARD";
+export const REFRESH_CARDS = 'REFRESH_CARDS'
+export const ARCHIVE_CARD = 'ARCHIVE_CARD'
 
-
+export const ADD_APP_BAR_VALUE = 'ADD_APP_BAR_VALUE';
 export const OPEN_ADD_CARD = 'OPEN_ADD_CARD';
 export const CLOSE_ADD_CARD = 'OPEN_ADD_CARD';
-
-export const REMOVE_CARD = "REMOVE_CARD";
+export const TOGGLE_CARD_POPPER = 'OPEN_CARD_POPPER';
+export const CLICK_AWAY_CARD_POPPER = 'CLICKAWAY_CARD_POPPER';
+export const TOGGLE_DRAWER = 'TOGGLE_DRAWER';

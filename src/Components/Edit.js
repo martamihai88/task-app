@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { withStyles, 
          Modal,Button, 
          FormControl, 
@@ -8,73 +9,62 @@ import { withStyles,
          Icon  } from '@material-ui/core';
 import styles from './Styles/add-style';
 import moment from 'moment';
-import { cardFilter } from'../static';
+import { cardFilter, indexFinder } from'../static';
+import { connect } from 'react-redux';
+import * as appActions from '../Actions/appActions'
 
-class EditCard extends React.Component {
+class MyEditCard extends Component {
 
-  state = {
-    card:{
-      id: 'default',
-      title: 'default',
-      content: 'default',
-      dueDays:'',
-      createDate: '',
-      dueDate: ''
+  openEditCardRedux = (open, id) => {
+    this.props.openEditCardRedux(open, id);
+  }
+
+  handleTitleRedux = event => {
+    if(event){
+      this.props.handleTitleRedux({title: event.target.value})
+    }
+  }; 
+ 
+  handleContentRedux = event => {
+    if(event){
+      this.props.handleContentRedux({content: event.target.value})
     }
   }
 
-  componentDidUpdate(prevProps) {
-   if(prevProps.id !== this.props.id){
-     let card = cardFilter(this.props.cards, this.props.id)
-     this.setState({card : card[0]})
-   }
-  }  
-  
-  handleTitle = event => {
+  setDueDateRedux = event => {
     if(event){
-      let card = {...this.state.card, title: event.target.value}
-      this.setState({card})
-      }
-  }; 
- 
-  handleContent = event => {
-    if(event){
-      let card = this.state.card;
-      card.content = event.target.value;
-      this.setState({card})
-      }
-  }
-
-  handleDate = event => {
-    if(event){
-      let editedCard = this.state.card;
+      let editedCard = this.props.card;
       const start =  moment(editedCard.createDate);
       const end = moment(event.target.value);
       const days = end.diff(start, 'days');
-      editedCard.dueDate =  event.target.value;
-      editedCard.dueDays =  days;
-      this.setState({card: editedCard});
+      this.props.setDueDateRedux({dueDays: days, dueDate: end._i})
     }
   }
 
-  clearValues = () => {
-    this.props.modifyCard(this.props.id, this.state.card);
+  submitCardRedux = () => {
+    let cards = this.props.cards.slice(0)
+    const card = this.props.card; 
+    const index = indexFinder(cards, this.props.card.id);
+    cards[index] = card;
+    this.props.submitCardRedux(cards);
+    this.props.resetAddCardRedux();
+    this.props.openEditCardRedux(false, '');
   }
 
   render() {
 
-    const { open , close , classes, type, id } = this.props;
-    const { title, content, dueDate } = this.state.card;
+    const { openEdit , classes, id, cards } = this.props;
+    const editedCard = cardFilter(cards, id);
 
     return (
       <React.Fragment>
         <Modal
-          open={open}
-          onClose={close}
+          open={openEdit}
+          onClose={() => this.openEditCardRedux(false, '')}
         >
           <div className={classes.paper}>
             <AppBar position="static" className={classes.bar}>
-                {type === 'task'? 
+                {editedCard.length > 0 && editedCard[0].type === 'task' ? 
                  <Tab style={{ margin: 'auto'}} label="Task" /> : <Tab  style={{ margin: 'auto'}} label="Note" />}
             </AppBar>
             <FormControl style={{height: '67px', marginTop: 0}} className={classes.input_2}>
@@ -82,8 +72,8 @@ class EditCard extends React.Component {
                 required
                 maxLength={16}
                 id="outlined-required"
-                defaultValue={title}
-                onChange={this.handleTitle}
+                defaultValue={editedCard[0] ? editedCard[0].title : ''}
+                onChange={this.handleTitleRedux}
                 className={classes.textField}
                 margin="normal"
                 variant="outlined"
@@ -95,21 +85,21 @@ class EditCard extends React.Component {
                 required
                 multiline
                 rows="8"
-                defaultValue={content}
-                onChange={this.handleContent}
+                defaultValue={editedCard[0] ? editedCard[0].content : ''}
+                onChange={this.handleContentRedux}
                 className={classes.textField}
                 margin="normal"
                 variant="outlined"
               />
             </FormControl>
             <form className={classes.container} noValidate>
-                {type === 'task' && <TextField
+                {editedCard.length > 0 && editedCard[0].type === 'task' && <TextField
                   id={id}
                   label="Due Date"
                   type="date"
                   required
-                  defaultValue={dueDate}
-                  onChange={this.handleDate}
+                  defaultValue={editedCard[0] ? editedCard[0].dueDate : ''}
+                  onChange={this.setDueDateRedux}
                   classes={{
                     root: classes.formControl
                   }}
@@ -118,7 +108,7 @@ class EditCard extends React.Component {
                   }}
                 />}
             </form>
-            <Button variant="fab" mini color="primary" className={classes.button}  onClick={this.clearValues}>
+            <Button variant="fab" mini color="primary" className={classes.button} onClick={this.submitCardRedux}>
                 <Icon>edit_icon</Icon>
             </Button>
           </div>
@@ -128,4 +118,30 @@ class EditCard extends React.Component {
   }
 }
 
-export default withStyles(styles)(EditCard);
+MyEditCard.propTypes = {
+  cards:  PropTypes.arrayOf(PropTypes.object),
+  id: PropTypes.string.isRequired,
+  openEdit: PropTypes.bool,
+  card: PropTypes.object,
+  classes: PropTypes.object
+}
+
+const mapStateToProps = state => {
+  return {
+    openEdit: state.app.openEdit,
+    cards: state.app.cards,
+    id: state.app.id,
+    card: state.app.card
+  };
+}
+
+const mapDispatchToProps = ({
+  openEditCardRedux: appActions.openEditCardRedux,
+  handleTitleRedux: appActions.handleTitleRedux, 
+  handleContentRedux: appActions.handleContentRedux, 
+  setDueDateRedux: appActions.setDueDateRedux,
+  submitCardRedux: appActions.submitCardRedux,
+  resetAddCardRedux: appActions.resetAddCardRedux
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(MyEditCard))

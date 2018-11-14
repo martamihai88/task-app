@@ -11,33 +11,25 @@ const styles = {
   }
 };
 
-class MyCard extends React.Component {
-  
-  render(){
-    const { classes, type, title, content, remove, id, progress, dueDays, editCard, archiveCard, dueDate } = this.props;
+export default withStyles(styles)(props => {
+  const { classes, type, title, content, id, progress, dueDate } = props;
 
-    return (
-      <Card className={classes.card}>
-        <CardHeader 
-          id={id}
-          title={title}
-          type={type}
-          progress={progress}
-          content={content}
-          dueDays={dueDays}
-          remove={(e) => remove(e)}
-         />
-         <CardFooter 
-          cardType={type} 
-          id={id} 
-          progress={progress}
-          editCard={editCard} 
-          archiveCard={archiveCard} 
-          dueDate={dueDate}
-         />
-      </Card>
-    );
-  }
-}
+  return (
+    <Card className={classes.card}>
+      <CardHeader 
+        id={id}
+        title={title}
+        type={type}
+        progress={progress}
+        content={content}
+        />
+        <CardFooter 
+        cardType={type} 
+        id={id} 
+        progress={progress}
+        dueDate={dueDate}
+        />
+    </Card>
+  );
+})
 
-export default withStyles(styles)(MyCard);
