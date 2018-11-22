@@ -13,14 +13,16 @@ import { refreshCards, archiveCard} from './Actions/appActions';
 class App extends Component {
 
   componentWillMount() {
-    if(this.props.cards.length > 0){
-        this.props.cards.map(card => {
+    const { cards , archiveCard, refreshCards } = this.props;
+    refreshCards(progress(cards));
+
+    if(cards.length > 0){
+        cards.map(card => {
           if(card.dueDays < 0){
-            this.props.archiveCard(card) 
+            archiveCard(card) 
           }
           return undefined;
         });
-      this.props.refreshCards(progress(this.props.cards));
     }
   }
 

@@ -32,14 +32,14 @@ export default function(state = initialState, { type, payload }){
           ...state,
           appBarValue: payload.value,
       }
-    case  types.TOGGLE_CARD_POPPER:
+    /* case  types.TOGGLE_CARD_POPPER:
       return {
         ...state, footer: {...state.footer, ...payload }
     }
     case  types.CLICK_AWAY_CARD_POPPER:
       return {
         ...state, footer: {...state.footer, open: payload.open}
-    }
+    } */
     case  types.TOGGLE_DRAWER:
       return {
         ...state, header: {...state.header, open: payload.open}

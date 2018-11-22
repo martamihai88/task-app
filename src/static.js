@@ -16,6 +16,7 @@ const progress = (allCards) => {
       card.dueDays = dateDifference;
     } else {
       card.dueDays = dateDifference;
+      card.progress = 100;
     }
     return card;
   });

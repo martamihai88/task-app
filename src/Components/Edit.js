@@ -16,6 +16,7 @@ import * as appActions from '../Actions/appActions'
 class MyEditCard extends Component {
 
   openEditCardRedux = (open, id) => {
+    this.props.resetAddCardRedux();
     this.props.openEditCardRedux(open, id);
   }
 
@@ -42,7 +43,7 @@ class MyEditCard extends Component {
   }
 
   submitCardRedux = () => {
-    let cards = this.props.cards.slice(0)
+    let cards = this.props.cards.slice(0);
     const card = this.props.card; 
     const index = indexFinder(cards, this.props.card.id);
     cards[index] = card;

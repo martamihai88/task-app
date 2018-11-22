@@ -19,6 +19,12 @@ import { connect } from 'react-redux';
 import { openEditCardRedux, editCard, archiveCard } from  '../../Actions/appActions';
 import { handleOpenPopperRedux, clickAwayPopperRedux } from  '../../Actions/appSideActions';
 class CardFooter extends Component {
+
+  state = {
+    anchorEl: null,
+    open: false,
+    placement: null,
+  };
     
   openEditCardRedux = (open, id) => {
     this.props.openEditCardRedux(open, id);
@@ -31,26 +37,24 @@ class CardFooter extends Component {
     this.props.archiveCard(archivedCard);
   }
 
-  handleOpenPopperRedux  = placement => event => {
+  handleClick = placement => event => {
     const { currentTarget } = event;
-    const { currentPlacement, open} = this.props.footer;
-    this.props.handleOpenPopperRedux(
-      {
-        anchorEl: currentTarget, // On hold!!!!
-        open: currentPlacement !== placement || !open,
-        placement,
-      }
-    );
-  }
+    this.setState(state => ({
+      anchorEl: currentTarget,
+      open: state.placement !== placement || !state.open,
+      placement,
+    }));
+  };
 
-  clickAwayPopperRedux = () => {
-    if(this.props.footer.open)
-    this.props.clickAwayPopperRedux({open: false});
-  }
+  handleClickAway = () => {
+    this.setState({
+      open: false,
+    });
+  };
 
   render() {
     const { classes, cardType, id, dueDate  } = this.props
-    const { anchorEl, open, placement  } = this.props.footer;
+    const { anchorEl, open, placement  } = this.state
     const popperId = open ? 'simple-popper' : null;
 
     return (
@@ -64,9 +68,9 @@ class CardFooter extends Component {
           <Icon>edit_icon</Icon>
         </Button>
         {dueDate === today._i && cardType === 'task' && 
-          <ClickAwayListener onClickAway={this.clickAwayPopperRedux}>
+          <ClickAwayListener onClickAway={this.handleClickAway}>
             <div>
-              <IconButton color="secondary" className={classes.button} onClick={this.handleOpenPopperRedux('top')}>
+              <IconButton color="secondary" className={classes.button} onClick={this.handleClick('top')}>
                 <Icon>alarm</Icon>
               </IconButton>
               <Popper id={popperId} 
