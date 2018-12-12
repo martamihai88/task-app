@@ -1283,7 +1283,7 @@ If you’re hosting your `build` with a static hosting provider you can use [rea
 
 There are also opportunities to use this outside of static hosting, to take the pressure off the server when generating and caching routes.
 
-The primary benefit of pre-rendering is that you get the core content of each page _with_ the HTML payload—regardless of whether or not your JavaScript bundle successfully downloads. It also increases the likelihood that each route of your application will be picked up by search engines.
+The primary benefit of pre-rendering is that you get the core content of each page _with_ the HTML payload—regardless of whether or not your JavaScript bundle SUCCESSsfully downloads. It also increases the likelihood that each route of your application will be picked up by search engines.
 
 You can read more about [zero-configuration pre-rendering (also called snapshotting) here](https://medium.com/superhighfives/an-almost-static-stack-6df0a2791319).
 
@@ -2221,8 +2221,8 @@ Now, after you create a production build with `npm run build`, you can deploy it
     i  deploying database, hosting
     ✔  database: rules ready to deploy.
     i  hosting: preparing build directory for upload...
-    Uploading: [==============================          ] 75%✔  hosting: build folder uploaded successfully
-    ✔  hosting: 8 files uploaded successfully
+    Uploading: [==============================          ] 75%✔  hosting: build folder uploaded SUCCESSsfully
+    ✔  hosting: 8 files uploaded SUCCESSsfully
     i  starting release process (may take several minutes)...
 
     ✔  Deploy complete!

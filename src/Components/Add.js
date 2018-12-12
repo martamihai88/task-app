@@ -10,7 +10,7 @@ import { withStyles,
 import AddIcon from '@material-ui/icons/Add';
 import moment from 'moment';
 import styles from './Styles/add-style';
-import { today , key } from '../static'
+import { today } from '../static'
 import { connect } from 'react-redux';
 import * as appActions from '../Actions/appActions';
 import * as appSideActions from '../Actions/appSideActions';       
@@ -19,10 +19,11 @@ class AddCard extends Component {
 
   addCardRedux = () => {
     let type = this.props.appBarValue === 0 ? 'task' : 'note';
+    console.log(type);
     if(type === 'task'){ 
-      this.props.addCardToCards({...this.props.card, id: key(), type: type, progress: 0, createDate: today._i});
+      this.props.addCardToCards({...this.props.card, /* id: key(), */ type: type, progress: 0, createDate: today._i});
     } else {
-      this.props.addCardToCards({...this.props.card, id: key(), type: type, createDate: today._i , dueDays: '', dueDate: ''});
+      this.props.addCardToCards({...this.props.card, /* id: key(),*/ type: type, createDate: today._i , dueDays: '', dueDate: ''});
     }
     this.props.resetAddCardRedux();
     this.props.closeAddCardRedux(false);
@@ -124,7 +125,8 @@ const mapStateToProps = state => {
   return {
     card: state.app.card,
     appBarValue: state.appSide.appBarValue,
-    open: state.appSide.open
+    open: state.appSide.open,
+    token: state.login.user.token
   };
 }
 const mapDispatchToProps = ({
@@ -136,7 +138,8 @@ const mapDispatchToProps = ({
   closeAddCardRedux: appSideActions.closeAddCardRedux,
   addCardToCards: appActions.addCardToCards,
   openAddCardRedux: appSideActions.openAddCardRedux,
-  resetAddCardRedux: appActions.resetAddCardRedux
+  resetAddCardRedux: appActions.resetAddCardRedux,
+  retreiveAllCards: appActions.retreiveAllCards
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(AddCard))

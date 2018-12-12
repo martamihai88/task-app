@@ -9,7 +9,7 @@ import { withStyles,
          Icon  } from '@material-ui/core';
 import styles from './Styles/add-style';
 import moment from 'moment';
-import { cardFilter, indexFinder } from'../static';
+import { cardFilter } from'../static';
 import { connect } from 'react-redux';
 import * as appActions from '../Actions/appActions'
 
@@ -43,19 +43,23 @@ class MyEditCard extends Component {
   }
 
   submitCardRedux = () => {
-    let cards = this.props.cards.slice(0);
-    const card = this.props.card; 
-    const index = indexFinder(cards, this.props.card.id);
-    cards[index] = card;
-    this.props.submitCardRedux(cards);
+    const { cards, card } = this.props;
+    const editedCards = cards.map(c => {
+      if(c.id === card.id){
+        return card;
+      }
+      return c;
+    });
+    this.props.submitCardRedux(card, editedCards);
     this.props.resetAddCardRedux();
-    this.props.openEditCardRedux(false, '');
+    this.props.openEditCardRedux(false, '', '');
   }
 
   render() {
 
-    const { openEdit , classes, id, cards } = this.props;
-    const editedCard = cardFilter(cards, id);
+    const { openEdit , classes, editedCardId, cards } = this.props;
+    console.log(editedCardId);
+    const editedCard = cardFilter(cards, editedCardId);
 
     return (
       <React.Fragment>
@@ -95,7 +99,7 @@ class MyEditCard extends Component {
             </FormControl>
             <form className={classes.container} noValidate>
                 {editedCard.length > 0 && editedCard[0].type === 'task' && <TextField
-                  id={id}
+                  id={editedCardId}
                   label="Due Date"
                   type="date"
                   required
@@ -121,7 +125,7 @@ class MyEditCard extends Component {
 
 MyEditCard.propTypes = {
   cards:  PropTypes.arrayOf(PropTypes.object),
-  id: PropTypes.string.isRequired,
+  editedCardId: PropTypes.string.isRequired,
   openEdit: PropTypes.bool,
   card: PropTypes.object,
   classes: PropTypes.object
@@ -131,7 +135,7 @@ const mapStateToProps = state => {
   return {
     openEdit: state.app.openEdit,
     cards: state.app.cards,
-    id: state.app.id,
+    editedCardId: state.app.editedCardId,
     card: state.app.card
   };
 }

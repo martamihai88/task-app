@@ -9,7 +9,7 @@ import Edit from './Components/Edit';
 import { progress } from './static';
 import './App.css';
 import { connect } from 'react-redux';
-import { refreshCards, archiveCard} from './Actions/appActions';
+import { refreshCards, archiveCard, retreiveAllCards , retreiveAllArchivedCards} from './Actions/appActions';
 class App extends Component {
 
   componentWillMount() {
@@ -23,6 +23,13 @@ class App extends Component {
           }
           return undefined;
         });
+    }
+  }
+
+  componentDidUpdate(prevState) {
+    if(this.props.login.loggedIn && (this.props.token !== prevState.token)){
+      this.props.retreiveAllCards();
+      this.props.retreiveAllArchivedCards();
     }
   }
 
@@ -65,13 +72,17 @@ const mapStateToProps = state => {
   return {
     open: state.app.open,
     cards: state.app.cards,
-    archive: state.app.archive
+    archive: state.app.archive,
+    token: state.login.user.token,
+    login: state.login
   };
 }
 
 const mapDispatchToProps = ({
   refreshCards,
-  archiveCard
+  archiveCard,
+  retreiveAllCards,
+  retreiveAllArchivedCards
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

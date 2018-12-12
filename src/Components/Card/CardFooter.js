@@ -32,11 +32,13 @@ class CardFooter extends Component {
   }
 
   archiveCard = (id) => {
-    let archivedCard = cardFilter(this.props.cards, id);
-    archivedCard = {...archivedCard[0], dueDays: 0, progress: 100};
-    this.props.archiveCard(archivedCard);
+    if(this.props.cards.findIndex(card => card.id === id) > -1){
+      let archivedCard = cardFilter(this.props.cards, id);
+      archivedCard = {...archivedCard[0], dueDays: 0, progress: 100};
+      this.props.archiveCard(archivedCard);
+    } 
   }
-
+  
   handleClick = placement => event => {
     const { currentTarget } = event;
     this.setState(state => ({
@@ -53,7 +55,7 @@ class CardFooter extends Component {
   };
 
   render() {
-    const { classes, cardType, id, dueDate  } = this.props
+    const { classes, cardType, id, dueDate, archived  } = this.props
     const { anchorEl, open, placement  } = this.state
     const popperId = open ? 'simple-popper' : null;
 
@@ -67,7 +69,7 @@ class CardFooter extends Component {
         >
           <Icon>edit_icon</Icon>
         </Button>
-        {dueDate === today._i && cardType === 'task' && 
+        {dueDate === today._i && archived === false && cardType === 'task' && 
           <ClickAwayListener onClickAway={this.handleClickAway}>
             <div>
               <IconButton color="secondary" className={classes.button} onClick={this.handleClick('top')}>
@@ -114,13 +116,15 @@ CardFooter.propTypes = {
   open: PropTypes.bool,
   cardType: PropTypes.oneOf(['task', 'note']),
   classes: PropTypes.object,
-  placement: PropTypes.string
+  placement: PropTypes.string,
+  archived: PropTypes.bool
 }
 
 const mapStateToProps = state => {
   return {
     footer: state.appSide.footer,
-    cards: state.app.cards
+    cards: state.app.cards,
+    archive: state.app.archive
   };
 }
 const mapDispatchToProps = ({

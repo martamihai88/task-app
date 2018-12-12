@@ -9,12 +9,14 @@ export default theme => ({
     overflow: 'hidden',
   },
   appFrame: {
+    minHeight: '940px',
     height: '100%',
     zIndex: 1,
     overflow: 'hidden',
     position: 'relative',
     display: 'flex',
     width: '100%',
+    backgroundColor: '#fff'
   },
   appBar: {
     position: 'absolute',
@@ -88,4 +90,7 @@ export default theme => ({
   'contentShift-right': {
     marginRight: 0,
   },
+  user: {
+    margin: '0 auto 0 auto'
+  }
 });

@@ -1,9 +1,9 @@
 import * as types from './types'     
 
-export const addCardToCards = (value) => {
+export const addCardToCards = (card) => {
   return {
     type: types.ADD_CARD_TO_CARDS,
-    payload: value
+    payload: card
   }
 }
 
@@ -21,17 +21,17 @@ export const  openEditCardRedux = (open, id) => {
   }
 }
 
-export const editCard = (id) => {
+export const editCard = id => {
   return {
     type: types.EDIT_CARD,
     payload: id
   }
 }
 
-export const submitCardRedux = (cards) => {
+export const submitCardRedux = (card, editedCards) => {
   return {
     type: types.EDIT_CARD_SUBMIT,
-    payload: cards
+    payload: {card, editedCards}
   }
 }
 
@@ -65,25 +65,39 @@ export const resetAddCardRedux = () => {
 
 export const removeCardRedux = id => {
   return {
-    type: types.REMOVE_CARD,
+    type: types.DELETE_CARD,
     payload: id
   }
 }
 
-export const refreshCards = (cards) => {
+export const refreshCards = cards => {
   return {
     type: types.REFRESH_CARDS,
     payload: cards
   }
 }
 
-export const archiveCard = (card) => {
+export const archiveCard = card => {
   return {
     type: types.ARCHIVE_CARD,
     payload: card
   }
 }
 
+export const retreiveAllCards = token => {
+  return {
+    type: types.FETCH_CARDS,
+    payload: token
+  }
+}
+
+
+export const retreiveAllArchivedCards = token => {
+  return {
+    type: types.FETCH_ARCHIVED_CARDS,
+    payload: token
+  }
+}
 
 
 

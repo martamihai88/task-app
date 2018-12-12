@@ -12,7 +12,7 @@ const styles = {
 };
 
 export default withStyles(styles)(props => {
-  const { classes, type, title, content, id, progress, dueDate } = props;
+  const { classes, type, title, content, id, progress, dueDate, archived } = props;
 
   return (
     <Card className={classes.card}>
@@ -24,7 +24,8 @@ export default withStyles(styles)(props => {
         content={content}
         />
         <CardFooter 
-        cardType={type} 
+        cardType={type}
+        archived={archived} 
         id={id} 
         progress={progress}
         dueDate={dueDate}

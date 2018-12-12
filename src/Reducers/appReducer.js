@@ -1,9 +1,9 @@
 import  * as types from '../Actions/types';  
-import { today, cardFilter } from '../static'
+import { today } from '../static'
 
 const initialState = {
   card:{
-    id: '',
+    id: "",
     title: '',
     content: '',
     dueDays: 0,
@@ -11,11 +11,12 @@ const initialState = {
     dueDate: today._i,
     progress: 0,
     type: '',
+    archived: false
     },
-    id: '',
+    editedCardId: '',
   cards: [],
   archive: [],
-  openEdit: false 
+  openEdit: false ,
   };
 
   export default function(state = initialState, { type, payload}){
@@ -30,16 +31,12 @@ const initialState = {
         }
       case types.EDIT_CARD_OPEN:
         return {
-          ...state , openEdit: payload.open, id: payload.id
+          ...state, openEdit: payload.open, editedCardId: payload.id
         }
       case types.EDIT_CARD:
         return {
-          ...state , card: cardFilter(state.cards, payload)[0]
-        }
-      case types.EDIT_CARD_SUBMIT:
-        return {
-          ...state, cards: payload
-        }      
+          ...state , card: payload
+        }  
       case types.INPUT_TITLE: 
         return {
           ...state , card: {...state.card, title: payload}
@@ -57,22 +54,29 @@ const initialState = {
             dueDate: payload.dueDate
           }
         } 
-      case types.ADD_CARD_TO_CARDS:
+      case types.ADD_CARD_TO_CARDS_SUCCESS:
         return {
-        ...state, cards: [...state.cards, payload]
+          ...state , cards: [...state.cards, payload] 
         }
-      case types.REMOVE_CARD:
+      case types.DELETE_CARD_SUCCESS:
         return {
-        ...state, cards: state.cards.filter((card) => card.id !== payload)
+        ...state,  cards: payload[0], archive: payload[1]
         }
-      case types.ARCHIVE_CARD:
+      case types.ARCHIVE_CARD_SUBMIT_SUCCESS:
         return {
-        ...state, cards: state.cards.filter((card) => card.id !== payload.id) , archive: [...state.archive, payload ]
+        ...state, cards: payload.cards , archive: [...state.archive, {...payload.archive, archived: true}]
         }
+      case types.EDIT_CARD_SUBMIT_SUCCESS:  
       case types.REFRESH_CARDS:
+      case types.FETCH_CARDS_SUCCESS:  
         return {
         ...state, cards: payload
-        }    
+        }
+      case types.FETCH_ARCHIVED_CARDS_SUCCESS: {
+        return {
+          ...state, archive : payload
+        }
+      }      
       default: {
         return state
       }     

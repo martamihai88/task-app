@@ -7,10 +7,13 @@ import { withStyles,
           AppBar, 
           Toolbar, 
           Typography, 
-          IconButton} from '@material-ui/core';
+          IconButton,
+          Button } from '@material-ui/core';
 import styles from './Styles/header-style';
 import AppDrawer from './Drawer';
+import Login from './Login/Login';
 import { handleDrawer, openAddCardRedux } from '../Actions/appSideActions';
+import { userLogout } from '../Actions/loginActions';
 import { connect } from 'react-redux';
 
 window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
@@ -21,8 +24,10 @@ class Header extends Component {
       this.props.handleDrawer({ open: false }) : this.props.handleDrawer({ open: true });
   };
 
+  userLogout = () => this.props.userLogout();
+
   render() {
-    const { classes , cards } = this.props;
+    const { classes , cards, loggedIn, user } = this.props;
     const { anchor, open } = this.props.header;
     
     return (
@@ -37,36 +42,47 @@ class Header extends Component {
             <Toolbar disableGutters={!open}>
               <IconButton
                 color="inherit"
-                onClick={this.handleDrawer}
+                onClick={loggedIn ? this.handleDrawer : undefined}
                 className={classNames(classes.menuButton, open && classes.hide)}
               >
                 <Menu />
               </IconButton>
-              <Typography variant="h6" color="inherit" noWrap>
+              <Typography style={{width: 1350}}variant="h6" color="inherit" noWrap>
                 Tasks & Notes
               </Typography>
+              {loggedIn && 
+                <div style={{display: 'flex', flexWrap: 'wrap'}}> 
+                  <p className={classes.user}>{user.email.split('@')[0]}</p>
+                  <Button onClick={() => this.userLogout()} style={{marginLeft: 'auto', marginRight: 'auto'}} color="inherit">Logout</Button>
+                </div>}
             </Toolbar>
           </AppBar>
-          <AppDrawer anchor={anchor} open={open} classes={classes}/>
-          <main
-            className={classNames(classes.content, classes[`content-${anchor}`], {
-              [classes.contentShift]: open,
-              [classes[`contentShift-${anchor}`]]: open,
-            })}
-          >
-            {cards.map(card => (
-              <MyCard 
-                key={card.id}
-                id={card.id}
-                type={card.type}
-                title={card.title}
-                content={card.content}
-                dueDays={card.dueDays}
-                progress={card.progress}
-                dueDate={card.dueDate}
-              />
-            ))}
-          </main>
+          { loggedIn ? 
+            <React.Fragment>
+            <AppDrawer anchor={anchor} open={open} classes={classes}/>
+            <main
+              className={classNames(classes.content, classes[`content-${anchor}`], {
+                [classes.contentShift]: open,
+                [classes[`contentShift-${anchor}`]]: open,
+              })}
+            >
+              {cards.map(card => ( 
+                <MyCard 
+                  key={card.id}
+                  id={card.id}
+                  type={card.type}
+                  archived={card.archived}
+                  title={card.title}
+                  content={card.content}
+                  dueDays={card.dueDays}
+                  progress={card.progress}
+                  dueDate={card.dueDate}
+                />
+              ))}
+            </main>
+          </React.Fragment> : 
+          <Login/>
+          }
         </div>
       </div>
     );
@@ -80,12 +96,15 @@ Header.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    header: state.appSide.header
+    header: state.appSide.header,
+    loggedIn: state.login.loggedIn,
+    user: state.login.user
   };
 }
 const mapDispatchToProps = ({
   handleDrawer,
-  openAddCardRedux
+  openAddCardRedux,
+  userLogout
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(Header));

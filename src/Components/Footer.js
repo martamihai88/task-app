@@ -16,26 +16,26 @@ const Footer = props => {
     
   return ( 
     <React.Fragment>
-      <div className={container}>
-      <Paper className={paper}>
-        <HourglassEmpty  />
-        <p className={para}>
-          {taskInProgress}
-          </p>
-      </Paper>
+      {props.loggedIn && <div className={container}>
         <Paper className={paper}>
-          <Build  />
+          <HourglassEmpty  />
           <p className={para}>
-            {taskNum}
-          </p>
-          </Paper>    
-        <Paper className={paper}>
-          <Note  />
-          <p className={para}>
-          {noteNum}
-          </p>
+            {taskInProgress}
+            </p>
         </Paper>
-      </div>
+          <Paper className={paper}>
+            <Build  />
+            <p className={para}>
+              {taskNum}
+            </p>
+            </Paper>    
+          <Paper className={paper}>
+            <Note  />
+            <p className={para}>
+            {noteNum}
+            </p>
+          </Paper>
+        </div>}
     </React.Fragment>
   );
 }
@@ -47,7 +47,8 @@ Footer.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    cards: state.app.cards
+    cards: state.app.cards,
+    loggedIn: state.login.loggedIn
   };
 }
 
