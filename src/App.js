@@ -10,9 +10,9 @@ import { progress } from './static';
 import './App.css';
 import { connect } from 'react-redux';
 import { refreshCards, archiveCard, retreiveAllCards , retreiveAllArchivedCards} from './Actions/appActions';
-class App extends Component {
+export class App extends Component {
 
-  componentWillMount() {
+  /* componentWillMount() {
     const { cards , archiveCard, refreshCards } = this.props;
     refreshCards(progress(cards));
 
@@ -24,7 +24,7 @@ class App extends Component {
           return undefined;
         });
     }
-  }
+  } */
 
   componentDidUpdate(prevState) {
     if(this.props.login.loggedIn && (this.props.token !== prevState.token)){
@@ -52,7 +52,7 @@ class App extends Component {
             <Header cards={archive}
           />)}
           />
-          <Route render={() =>(<h1 style={{fontSize: 200, textAlign:'center', margin: '200px 0'}}>Page not found 404</h1>)}
+          <Route render={() =>(<h1 id="not-found" style={{fontSize: 200, textAlign:'center', margin: '200px 0'}}>Page not found 404</h1>)}
           />
         </Switch>
         <Add />

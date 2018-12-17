@@ -74,14 +74,8 @@ const removeCardApi = (token, id) => {
 }
 
 function* getRemainingCards (action) {
-
   const cards = state => state.app
-  const allCards= yield select(cards);
-  /* console.log(xx.cards, xx.archive);
-  const allCards = state => state.app.cards;
-  const allArchive = state => state.app.archive;
-  const cards = yield select(allCards);
-  const archive = yield select(allArchive); */
+  const allCards = yield select(cards);
   const allRemainingCards = [allCards.cards.filter((card) => card.id !== action.payload), allCards.archive.filter((archive) => archive.id !== action.payload)]
   return allRemainingCards;
 }

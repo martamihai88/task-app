@@ -42,7 +42,7 @@ class Header extends Component {
             <Toolbar disableGutters={!open}>
               <IconButton
                 color="inherit"
-                onClick={loggedIn ? this.handleDrawer : undefined}
+                onClick={loggedIn ? this.handleDrawer : null}
                 className={classNames(classes.menuButton, open && classes.hide)}
               >
                 <Menu />
@@ -59,29 +59,29 @@ class Header extends Component {
           </AppBar>
           { loggedIn ? 
             <React.Fragment>
-            <AppDrawer anchor={anchor} open={open} classes={classes}/>
-            <main
-              className={classNames(classes.content, classes[`content-${anchor}`], {
-                [classes.contentShift]: open,
-                [classes[`contentShift-${anchor}`]]: open,
-              })}
-            >
-              {cards.map(card => ( 
-                <MyCard 
-                  key={card.id}
-                  id={card.id}
-                  type={card.type}
-                  archived={card.archived}
-                  title={card.title}
-                  content={card.content}
-                  dueDays={card.dueDays}
-                  progress={card.progress}
-                  dueDate={card.dueDate}
-                />
-              ))}
-            </main>
-          </React.Fragment> : 
-          <Login/>
+              <AppDrawer anchor={anchor} open={open} classes={classes}/>
+              <main
+                className={classNames(classes.content, classes[`content-${anchor}`], {
+                  [classes.contentShift]: open,
+                  [classes[`contentShift-${anchor}`]]: open,
+                })}
+              >
+                {cards.map(card => ( 
+                  <MyCard 
+                    key={card.id}
+                    id={card.id}
+                    type={card.type}
+                    archived={card.archived}
+                    title={card.title}
+                    content={card.content}
+                    dueDays={card.dueDays}
+                    progress={card.progress}
+                    dueDate={card.dueDate}
+                  />
+                ))}
+              </main>
+            </React.Fragment> : 
+            <Login/>
           }
         </div>
       </div>
@@ -91,7 +91,9 @@ class Header extends Component {
 
 Header.propTypes = {
   cards:  PropTypes.arrayOf(PropTypes.object),
-  header: PropTypes.object
+  header: PropTypes.object,
+  loggedIn: PropTypes.bool,
+  user:PropTypes.object
 }
 
 const mapStateToProps = state => {

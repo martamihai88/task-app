@@ -16,10 +16,10 @@
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-material-ui-form-validator": "^2.0.2",
-    "react-redux": "^5.1.0",
+    "react-redux": "^6.0.0",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "2.0.5",
+    "react-scripts": "2.1.1",
     "redux": "^4.0.1",
     "redux-saga": "^0.16.2",
     "redux-thunk": "^2.3.0",
@@ -39,5 +39,11 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "domhandler": "^2.4.2",
+    "domutils": "^1.7.0",
+    "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.7.1"
+  }
 }
